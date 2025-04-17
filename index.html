@@ -3,9 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Happy Birthday! Lakshay</title>
+  <title>Happy Birthday!</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -17,26 +21,27 @@
 
     h1 {
       font-family: 'Pacifico', cursive;
-      font-size: 4em;
+      font-size: 3.5em;
       color: #fff;
       text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
-      margin-top: 40px;
+      margin-top: 50px;
     }
 
     p {
-      font-size: 1.4em;
+      font-size: 1.3em;
       color: #444;
-      margin: 20px;
+      margin: 15px 25px;
     }
 
     .cake {
-      font-size: 6em;
+      font-size: 5em;
       animation: bounce 1s infinite alternate;
+      margin: 20px 0;
     }
 
     @keyframes bounce {
       to {
-        transform: translateY(-10px);
+        transform: translateY(-15px);
       }
     }
 
@@ -50,15 +55,15 @@
 
     .card {
       background: white;
-      border-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       overflow: hidden;
       width: 250px;
-      transition: transform 0.3s;
+      transition: transform 0.3s ease;
     }
 
     .card:hover {
-      transform: scale(1.05);
+      transform: scale(1.07);
     }
 
     .card img {
@@ -71,7 +76,7 @@
       position: absolute;
       font-size: 3em;
       bottom: -100px;
-      animation: floatUp 10s linear infinite;
+      animation: floatUp 12s linear infinite;
     }
 
     @keyframes floatUp {
@@ -86,12 +91,17 @@
       background: #ff69b4;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 12px 22px;
       border-radius: 30px;
       font-size: 16px;
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       z-index: 10;
+      transition: background 0.3s ease;
+    }
+
+    #music-btn:hover {
+      background: #ff85c1;
     }
 
     canvas {
@@ -101,12 +111,30 @@
       z-index: 1;
       pointer-events: none;
     }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.5em;
+      }
+
+      .gallery {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #music-btn {
+        top: 10px;
+        right: 10px;
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Happy Birthday, [Name]!</h1>
+  <h1>Happy Birthday, Jatin! 🎉</h1>
   <div class="cake">🎂</div>
-  <p>Wishing you all the love and magic today and always!</p>
+  <p>Wishing you joy, love, and all the cake you can eat today and always!</p>
 
   <div class="gallery">
     <div class="card"><img src="images/photo1.jpg" alt="Memory 1"></div>
@@ -117,10 +145,10 @@
   <button id="music-btn">Play Music</button>
   <audio id="birthday-song" src="music/happy-birthday.mp3"></audio>
 
-  <!-- Balloon emojis as animation -->
+  <!-- Floating Balloons -->
   <div class="balloon" style="left: 10%; animation-delay: 0s;">🎈</div>
-  <div class="balloon" style="left: 50%; animation-delay: 3s;">🎈</div>
-  <div class="balloon" style="left: 80%; animation-delay: 6s;">🎈</div>
+  <div class="balloon" style="left: 45%; animation-delay: 3s;">🎈</div>
+  <div class="balloon" style="left: 75%; animation-delay: 6s;">🎈</div>
 
   <canvas id="confetti"></canvas>
 
@@ -138,40 +166,42 @@
       }
     });
 
-    // Confetti
+    // Confetti Setup
     const canvas = document.getElementById('confetti');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
 
-    const pieces = [];
-    for (let i = 0; i < 100; i++) {
-      pieces.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height - canvas.height,
-        size: Math.random() * 8 + 4,
-        speed: Math.random() * 2 + 1,
-        color: hsl(${Math.random() * 360}, 100%, 50%)
-      });
-    }
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
 
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const pieces = Array.from({ length: 150 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height - height,
+      size: Math.random() * 6 + 4,
+      speed: Math.random() * 2 + 1,
+      color: `hsl(${Math.random() * 360}, 100%, 60%)`
+    }));
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, width, height);
       for (let p of pieces) {
         ctx.fillStyle = p.color;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
         p.y += p.speed;
-        if (p.y > canvas.height) {
+        if (p.y > height) {
           p.y = 0;
-          p.x = Math.random() * canvas.width;
+          p.x = Math.random() * width;
         }
       }
-      requestAnimationFrame(draw);
+      requestAnimationFrame(drawConfetti);
     }
 
-    draw();
+    drawConfetti();
   </script>
 </body>
 </html>
