@@ -62,7 +62,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 20px;
+      gap: 40px;
       margin: 40px 20px;
     }
 
@@ -99,14 +99,10 @@
       transition: opacity 0.3s;
     }
 
-    .card:hover::after {
-      opacity: 1;
-    }
-
     .balloon {
       position: absolute;
       font-size: 3em;
-      bottom: -100px;
+      bottom: -700px;
       animation: floatUp 12s linear infinite;
       text-shadow: 0 0 10px #ff69b4;
     }
@@ -175,6 +171,7 @@
       .gallery {
         flex-direction: column;
         align-items: center;
+        
       }
 
       #music-btn {
@@ -184,6 +181,70 @@
         font-size: 14px;
       }
     }
+    .slider-container {
+  position: relative;
+  width: 90%;
+  max-width: 800px;
+  margin: 50px auto;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.slider-track img {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 105, 180, 0.7);
+  border: none;
+  font-size: 2rem;
+  color: white;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 5;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+
+.slider-btn:hover {
+  background: rgba(255, 105, 180, 1);
+}
+
+.slider-btn.prev {
+  left: 10px;
+}
+
+.slider-btn.next {
+  right: 10px;
+}
+
+h2{
+  text-align: center;
+  color: rgb(199, 52, 52);
+  font-family: 'Pacifico', cursive;
+}
+
+.date-label {
+  padding: 10px;
+  font-size: 1em;
+  color: #ff1493;
+  background: rgba(255, 255, 255, 0.8);
+  font-weight: bold;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+
   </style>
 </head>
 <body>
@@ -194,12 +255,34 @@
     I 🫶🏻 u end of my life 🤞🏻<br>
     Once again B'dayyy wish for the one who makes my heart smile every day thank u so much for this 💕<br><br></p>
 
-  <div class="gallery">
-    <div class="card"><img src="images/photo1.jpg" alt="Memory 1"></div>
-    <div class="card"><img src="images/photo2.jpg" alt="Memory 2"></div>
-    <div class="card"><img src="images/photo3.jpg" alt="Memory 3"></div>
-    <div class="card"><img src="images/photo4.jpg" alt="Memory 4"></div>
+    <h2>Our Journey Started From Here 💕</h2>
+<div class="gallery">
+  <div class="card">
+    <img src="Images/Snapchat-31116443.jpg" alt="Memory 1">
+    <div class="date-label">28 July 2024</div>
   </div>
+  <div class="card">
+    <img src="images/IMG-20240907-WA0014.jpg" alt="Memory 2">
+    <div class="date-label">07 Sep 2024</div>
+  </div>
+  <div class="card">
+    <img src="images/Snapchat-803451845.jpg" alt="Memory 3">
+    <div class="date-label">02 Oct 2024</div>
+  </div>
+</div>
+
+  <h2 style="font-family: 'Pacifico', cursive; color: #c80808; margin-top: 60px;">Memories 🥰</h2>
+<div class="slider-container">
+  <button class="slider-btn prev">❮</button>
+  <div class="slider-track">
+    <img src="images/InShot_20250419_163952520.jpg" alt="Slide 1">
+    <img src="images/photo6.jpg" alt="Slide 2">
+    <img src="images/photo7.jpg" alt="Slide 3">
+    <img src="images/photo8.jpg" alt="Slide 4">
+  </div>
+  <button class="slider-btn next">❯</button>
+</div>
+
 
   <button id="music-btn">Play Music</button>
   <audio id="birthday-song" src="music/happy-birthday.mp3"></audio>
@@ -280,6 +363,30 @@
       star.style.animationDelay = `${Math.random() * 2}s`;
       starField.appendChild(star);
     }
+    // Image Slider Logic
+const track = document.querySelector('.slider-track');
+const slides = document.querySelectorAll('.slider-track img');
+const prevBtn = document.querySelector('.slider-btn.prev');
+const nextBtn = document.querySelector('.slider-btn.next');
+let currentIndex = 0;
+
+function updateSlider() {
+  const slideWidth = slides[0].clientWidth;
+  track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+}
+
+prevBtn.addEventListener('click', () => {
+  currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1;
+  updateSlider();
+});
+
+nextBtn.addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % slides.length;
+  updateSlider();
+});
+
+window.addEventListener('resize', updateSlider);
+
   </script>
 </body>
 </html>
